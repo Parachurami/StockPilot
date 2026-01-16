@@ -28,7 +28,7 @@ This application utilizes [DummyJSON](https://dummyjson.com/) as its backend dat
 ## Download
 
 You can download the latest release APK here:
-[Download app-release.apk](build/app/outputs/flutter-apk/app-release.apk)
+[Download app-release.apk](releases/app-release.apk)
 
 ## Setup Instructions
 
