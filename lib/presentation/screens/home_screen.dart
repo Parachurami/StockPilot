@@ -163,107 +163,106 @@ class HomeScreen extends StatelessWidget {
 
             // List Section
             Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  await context.read<HomeCubit>().loadDashboardData();
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      // Categories Section
-                      SizedBox(
-                        height: 110,
-                        child: BlocBuilder<HomeCubit, HomeState>(
-                          builder: (context, state) {
-                            Widget content;
-                            if (state is HomeLoading) {
-                              content = const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (state is HomeLoaded) {
-                              content = ListView.separated(
-                                key: const ValueKey('CategoriesList'),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: state.categories.length,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 20),
-                                itemBuilder: (context, index) {
-                                  return CategoryItem(
-                                    category: state.categories[index],
-                                  );
-                                },
-                              );
-                            } else if (state is HomeError) {
-                              content = Center(
-                                child: Text('Error: ${state.message}'),
-                              );
-                            } else {
-                              content = const SizedBox.shrink();
-                            }
-                            return AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 500),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                              child: content,
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-
-                      // Search Bar
-                      const HomeSearchBar(),
-
-                      const SizedBox(height: 16),
-                      const SizedBox(height: 16),
-                      // Products List
-                      BlocBuilder<HomeCubit, HomeState>(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    // Categories Section
+                    SizedBox(
+                      height: 110,
+                      child: BlocBuilder<HomeCubit, HomeState>(
                         builder: (context, state) {
+                          Widget content;
                           if (state is HomeLoading) {
-                            return const Center(
+                            content = const Center(
                               child: CircularProgressIndicator(),
                             );
                           } else if (state is HomeLoaded) {
-                            return ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(bottom: 80),
-                              itemCount: state.products.length,
+                            content = ListView.separated(
+                              key: const ValueKey('CategoriesList'),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.categories.length,
                               separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 16),
+                                  const SizedBox(width: 20),
                               itemBuilder: (context, index) {
-                                return DraggableProductCard(
-                                  key: ValueKey(state.products[index].id),
-                                  product: state.products[index],
-                                  onDelete: () {
-                                    context.read<HomeCubit>().deleteProduct(
-                                      state.products[index].id,
-                                    );
-                                  },
-                                  child: ProductCard(
-                                    product: state.products[index],
-                                  ),
+                                return CategoryItem(
+                                  category: state.categories[index],
                                 );
                               },
                             );
                           } else if (state is HomeError) {
-                            return Center(
+                            content = Center(
                               child: Text('Error: ${state.message}'),
                             );
+                          } else {
+                            content = const SizedBox.shrink();
                           }
-                          return const SizedBox.shrink();
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            transitionBuilder:
+                                (Widget child, Animation<double> animation) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                            child: content,
+                          );
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Search Bar
+                    const HomeSearchBar(),
+
+                    const SizedBox(height: 16),
+                    const SizedBox(height: 16),
+                    // Products List
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          await context.read<HomeCubit>().loadDashboardData();
+                        },
+                        child: BlocBuilder<HomeCubit, HomeState>(
+                          builder: (context, state) {
+                            if (state is HomeLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (state is HomeLoaded) {
+                              return ListView.separated(
+                                padding: const EdgeInsets.only(bottom: 80),
+                                itemCount: state.products.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 16),
+                                itemBuilder: (context, index) {
+                                  return DraggableProductCard(
+                                    key: ValueKey(state.products[index].id),
+                                    product: state.products[index],
+                                    onDelete: () {
+                                      context.read<HomeCubit>().deleteProduct(
+                                        state.products[index].id,
+                                      );
+                                    },
+                                    child: ProductCard(
+                                      product: state.products[index],
+                                    ),
+                                  );
+                                },
+                              );
+                            } else if (state is HomeError) {
+                              return Center(
+                                child: Text('Error: ${state.message}'),
+                              );
+                            }
+                            return ListView(); // Empty list for initial state ensuring RefreshIndicator works
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
