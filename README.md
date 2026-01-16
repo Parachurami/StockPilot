@@ -28,7 +28,8 @@ This application utilizes [DummyJSON](https://dummyjson.com/) as its backend dat
 ## Download
 
 You can download the latest release APK here:
-[Download app-release.apk](releases/app-release.apk)
+*   [Direct Download (releases folder)](releases/app-release.apk)
+*   [Google Drive Mirror](https://drive.google.com/file/d/1dL1Ji-HqPD3QuHvi48bR7dUSO6SgXAMM/view?usp=sharing)
 
 ## Setup Instructions
 
