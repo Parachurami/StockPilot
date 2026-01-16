@@ -25,6 +25,11 @@ This application utilizes [DummyJSON](https://dummyjson.com/) as its backend dat
     *   **Categories**: Retrieving product categories.
     *   **Management**: Simulating product addition, updates, and deletion.
 
+## Download
+
+You can download the latest release APK here:
+[Download app-release.apk](build/app/outputs/flutter-apk/app-release.apk)
+
 ## Setup Instructions
 
 To get this project up and running on your local machine, follow these steps:
